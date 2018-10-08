@@ -5,7 +5,8 @@ Author : Kevin Buzzard
 Tested with lean 3.4.1 and mathlib from September 2018.
 -/
 
-definition quadroots {x : ℝ} : x ^ 2 - 3 * x + 2 = 0 ↔ x = 1 ∨ x = 2 := sorry
+import xenalib.quadroots
+--definition quadroots {x : ℝ} : x ^ 2 - 3 * x + 2 = 0 ↔ x = 1 ∨ x = 2 := sorry
 
 -- for proof see https://github.com/kbuzzard/xena/tree/master/M1F/problem_bank/PB0101/PB0101.lean
 
