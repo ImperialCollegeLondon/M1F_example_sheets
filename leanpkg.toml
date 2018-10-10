@@ -1,5 +1,5 @@
 [package]
-name = "M1F_sheet1"
+name = "M1F_2018-19"
 version = "0.1"
 lean_version = "nightly-2018-06-21"
 path = "src"
