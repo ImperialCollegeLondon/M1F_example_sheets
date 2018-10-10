@@ -1,6 +1,6 @@
 import data.real.basic tactic.norm_num
-import xenalib.M1F.real_half_not_an_integer
-import xenalib.M1F.int_squared_lt_3
+import xenalib.real_half_not_an_integer
+import xenalib.int_squared_lt_3
 
 noncomputable theory
 

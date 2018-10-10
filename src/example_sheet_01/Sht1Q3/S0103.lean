@@ -21,9 +21,15 @@ begin
   contradiction,
 end
 
+-- Lazy version 
+theorem m1f_sheet01_q03_is_F' (HP : P) (HnQ : ¬ Q) (HnR : ¬ R) (HS : S) : ¬ ((R → S) → (P → Q)) :=
+by simp [HP,HnQ,HnR,HS]
+
+-- even lazier version
+theorem m1f_sheet01_q03_is_F'' (HP : P) (HnQ : ¬ Q) (HnR : ¬ R) (HS : S) : ¬ ((R → S) → (P → Q)) :=
+by simp *
+
 -- here's a cool term mode proof. If anyone thinks it's all too easy
 -- they could try figuring out how this proof works.
-theorem m1f_sheet01_q03_is_F' (HP : P) (HnQ : ¬ Q) (HnR : ¬ R) (HS : S) : ¬ ((R → S) → (P → Q)) :=
+theorem m1f_sheet01_q03_is_F''' (HP : P) (HnQ : ¬ Q) (HnR : ¬ R) (HS : S) : ¬ ((R → S) → (P → Q)) :=
 λ H, HnQ $ H (λ _, HS) HP
-
-

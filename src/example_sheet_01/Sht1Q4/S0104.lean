@@ -16,13 +16,15 @@ Author : Kevin Buzzard
 
 -- (delete the one which you think is false and prove the other one)
 
+import tactic.norm_num
+
 theorem m1f_sheet01_q04_part_1 :
 ¬ (∀ P Q R : Prop, (P → (Q ∨ R)) ∧ (¬ Q → (R ∨ ¬ P)) ∧ ((Q ∧ R) → ¬ P) → P) :=
 begin
   intro H,
   have H2 := H false false true,
   revert H2,
-  cc,
+  cc, -- simp also works -- as does norm_num! But cc is the simplest.
 end
 
 theorem m1f_sheet01_q04_part_2 :
