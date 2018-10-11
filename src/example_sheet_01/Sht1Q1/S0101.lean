@@ -1,5 +1,5 @@
 /-
-M1F Problem Bank PB0101, solution
+M1F Sheet 1 Q1, solution
 Author : Kevin Buzzard
 -/
 
@@ -10,7 +10,7 @@ import xenalib.quadroots -- quadroots {x : ℝ} : x ^ 2 - 3 * x + 2 = 0 ↔ x = 
 
 -- part (a): this is false.
 
-theorem PB0101a_is_F : ¬ (∀ x : ℝ, x ^ 2 - 3 * x + 2 = 0 → x = 1) := 
+theorem M1F_Sheet01_Q01a_is_F : ¬ (∀ x : ℝ, x ^ 2 - 3 * x + 2 = 0 → x = 1) := 
 begin
 
 -- We're going to prove this by contradiction.
