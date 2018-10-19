@@ -1,170 +1,87 @@
-import xenalib.M1Fstuff algebra.group_power xenalib.square_root
-
--- automatic coercions to reals  
+import algebra.group_power data.real.basic
 
 section M1F_Sheet02
 
--- #check arbitrary
--- #print arbitrary
--- #check default 
--- #print default
+def countable_union_from_zero {α : Type} (X : nat → set α) := {t : α | exists i, t ∈ X i}
+def countable_union_from_one {α : Type} (X : nat → set α) := {t : α | exists i, 0 < i ∧ t ∈ X i}
+def countable_intersection_from_one {α : Type} (X : nat → set α) := {t : α | ∀ i, 0 < i → t ∈ X i}
 
+def Q0201a_sets (n : ℕ) : set ℝ := {x | ↑n ≤ x ∧ x < (n+1)}
 
--- ask about this
-/-
-example : arbitrary = default := 
+theorem Q0201a : countable_union_from_zero Q0201a_sets = {x | 0 ≤ x} := 
 begin
-unfold eq,
-end
--/
--- set_option pp.all true
-
-def countable_union_from_zero {α : Type} (X : nat → set α ) := { t : α | exists i, t ∈ X i}
-def countable_union_from_one {α : Type} (X : nat → set α ) := { t : α | exists i, i > 0 ∧ t ∈ X i}
-
-def Q1a_sets : ℕ → set ℝ := λ n x, ↑n ≤ x ∧ x < (n+1)
-
--- #check Q1a_sets
-
-/-
-def Q1a_sets2 : ℕ → set ℝ := λ n, { x | ↑ n ≤ x ∧ x < (n+1)}
-example : Q1a_sets = Q1a_sets2 :=
-begin
-apply funext,
-intro n,
-unfold Q1a_sets,
-unfold Q1a_sets2,
-apply funext,
-intro x,unfold set_of,
-end
--/
--- set_option pp.all true
-
-theorem Q1a : countable_union_from_zero Q1a_sets = { x | 0 ≤ x} :=
-begin
-unfold countable_union_from_zero,
-unfold Q1a_sets,
-apply funext,
-intro x,
-unfold set_of,
-have H : ∃ (n : ℤ), ↑n ≤ x ∧ x < ↑n + 1,
-  exact M1F.floor_real_exists x,
-apply propext,
-split,
-  intro H2,
-  cases H2 with i H3,
-  have H4 : ↑i ≤ x,
-    exact H3.left,
-  have H5 : (0:ℤ) ≤ ↑i,
-    exact int.coe_zero_le i,
-  apply le_trans _ H4,
-  simp [H5],
-  
-intro H2,
-cases H with n H3,
-have H4 : ((0:ℤ):ℝ) < (n:real) +(1:real),
-  exact lt_of_le_of_lt H2 H3.right,
-have H5 : ((0:ℤ):ℝ) < (n:ℝ) + ((1:ℤ):ℝ),
-  rw [int.cast_one], exact H4,
-clear H4,
--- rw [←int.cast_add] at H4,
--- have H5 : (0:ℤ) < n + of_rat(1),
---   exact H4,
--- rw [of_rat_add,of_rat_lt] at H5,
--- clear H4,
-rw [←int.cast_add,int.cast_lt] at H5,
-rw [int.lt_iff_add_one_le] at H5,
-simp at H5,
-have H : ∃ (n_1 : ℕ), n = ↑n_1,
-  exact int.eq_coe_of_zero_le H5,
-cases H with i H4,
-clear H5 H2,
-existsi i,
-split,
-  exact calc (i:ℝ) = ((i:ℤ):ℝ) : by simp
-  ... = (n:ℝ) : int.cast_inj.mpr (eq.symm H4)
-  ... ≤ x : H3.left,
-suffices H : (↑n : ℝ) = (↑i : ℝ), 
-  rw [←H],exact H3.right,
-rw [H4],
-refl,
-end
-/-
-
-def Q1b_sets : ℕ → set ℝ := λ n x, 1/(↑n) ≤ x ∧ x ≤ 1
-
--- set_option pp.notation false
--- set_option class.instance_max_depth 
-
--- set_option pp.all true
-
-theorem Q1b : countable_union_from_one Q1b_sets = { x | 0 < x ∧ x ≤ 1} :=
-begin
-unfold countable_union_from_one,
-unfold Q1b_sets,
-apply funext,
-intro x,
-unfold set_of,
-apply propext,
-split;intro H,
-  cases H with i Hi,
-  split,
-  tactic.swap,
-    exact Hi.right.right,
-    suffices H2 : (0:ℝ)  < 1/(↑i),
-    exact lt_of_lt_of_le H2 Hi.right.left,
---  have H3 : of_rat (((0:nat):int):rat) < of_rat ((i:int):rat),
---    rw [of_rat_lt,rat.coe_int_lt,int.coe_nat_lt_coe_nat_iff],
---    exact Hi.left,
-    rw [←int.cast_zero],
-    exact lt_div_of_mul_lt (nat.cast_lt.mpr Hi.left) (by simp [zero_lt_one]),
-have H2 : 0 < 1/x,
-  exact lt_div_of_mul_lt H.left (by simp [zero_lt_one]),
-have H3 : ∃ (n : ℤ), ↑n ≤ 1 / x ∧ 1 / x < ↑n + 1,
-  exact M1F.floor_real_exists (1/x),
-  cases H3 with n Hn,
-  have H3 : (0:ℝ) < (n:ℝ) + (1:ℝ),
-    exact lt_of_lt_of_le H2 (le_of_lt Hn.right),
-  rw [←int.cast_one,←int.cast_add,←int.cast_zero,int.cast_lt,int.lt_iff_add_one_le] at H3,
-  have H4 : ↑0 ≤ n,
-    apply le_of_add_le_add_right H3,
-  cases n with nnat nfalse,
-    tactic.swap,
-  have H5 : (0:ℤ) < (0:ℤ),
-    exact calc (0:ℤ) ≤ int.neg_succ_of_nat nfalse : H4
-          ... < 0 : int.neg_succ_of_nat_lt_zero nfalse,
-  exfalso,
-  apply H5,
-  clear H3 H4,
-  existsi (nnat+1),
-  split,
-    exact calc 0< nat.succ nnat : nat.zero_lt_succ nnat
-    ... = nnat+1 : rfl,
-  split,
-  tactic.swap,
-  exact H.right,
-  have H4 : x > 0,
-    unfold gt,exact H.left,
-  have H5 : nnat+1>0,
-     exact (nat.zero_lt_succ nnat),
-  have H6 : (((nnat+1):ℕ):ℝ) > 0,
-    exact nat.cast_lt.mpr H5,
-  have H7 : ((int.of_nat nnat):ℝ) + 1 = (((nnat+1):ℕ):ℝ), simp,
-  have Hnr : 1 / x < ↑(int.of_nat nnat) + 1,
-    exact Hn.right,
-    rw [H7] at Hnr,
-  clear Hn H5,
-  suffices H5 : 1 ≤ ↑(nnat+1)*x,
-    exact div_le_of_le_mul H6 H5,
-exact (div_le_iff_le_mul_of_pos H4).mp (le_of_lt Hnr)
+  apply set.subset.antisymm,
+  { -- union ⊆ {x | 0 ≤ x}
+    intro x,
+    show (∃ i : ℕ, ↑i ≤ x ∧ x < (i + 1)) → 0 ≤ x,
+    intro H,
+    cases H with i Hi,
+    apply le_trans _ Hi.left,
+    simp,
+  },
+  { -- {x | 0 ≤ x} ⊆ union
+    intros x Hx,
+    change 0 ≤ x at Hx,
+    change ∃ i : ℕ, ↑i ≤ x ∧ x < (i + 1),
+    let m := floor x, -- unfortunately an integer, not a natural!
+    have Hm : 0 ≤ m,
+      convert floor_mono Hx,
+      simp,
+    existsi int.nat_abs m,
+    suffices : (((int.nat_abs m) : ℤ) : ℝ) ≤ x ∧ x < ((int.nat_abs m) : ℤ) + 1,
+      simpa,
+    rw int.nat_abs_of_nonneg Hm,
+    exact ⟨floor_le x,lt_floor_add_one x⟩,
+  },
 end
 
+def Q0201b_sets (n : ℕ) : set ℝ := {x | 1/(↑n) ≤ x ∧ x ≤ 1}
 
-def Q1c_sets : ℕ → set ℝ := λ n x, -↑n < x ∧ x < n
+theorem Q0201b : countable_union_from_one Q0201b_sets = { x | 0 < x ∧ x ≤ 1} :=
+begin
+  unfold countable_union_from_one,
+  apply set.subset.antisymm,
+  { -- this branch shows the union ⊆ (0,1]
+    rintro x ⟨i,Hi,Hx⟩,
+    change 1/(i : ℝ) ≤ x ∧ x ≤ 1 at Hx,
+    split,
+    { apply lt_of_lt_of_le _ Hx.1,
+      apply one_div_pos_of_pos,
+      simp [Hi]},
+    exact Hx.2
+  },
+  { rintro x ⟨H0,H1⟩,
+    -- now need a natual i > 0 with 1 / i <= x
+    let m := ceil (1 / x), -- an integer!
+    have Hm : 0 < m,
+      -- 0 < 1/x <= m
+      exact int.cast_lt.1 (lt_of_lt_of_le (one_div_pos_of_pos H0) (le_ceil (1/x))),
+    let i := int.nat_abs m, -- take the absolute value!
+    have Hi : m = i := int.eq_nat_abs_of_zero_le (le_of_lt Hm),
+    -- m is finally i, with i a natural
+    existsi i,
+    split,
+      exact int.coe_nat_lt.1 (Hi ▸ Hm),
+    -- now need to show x in [1/i,1]
+    change 1/(i : ℝ) ≤ x ∧ x ≤ 1,
+    split,
+    { -- 1/i <= x
+      apply one_div_le_of_one_div_le_of_pos H0,
+      change 1/x ≤ (i : ℤ),
+      rw ←Hi,
+      exact le_ceil (1/x)
+    },
+  exact H1
+  }
+end
 
--- #check max,
+#exit
 
-theorem Q1c : countable_union_from_one Q1c_sets = { x | true } :=
+-- horrible 2017 version
+
+def Q0201c_sets (n : ℕ) : set ℝ := {x | -↑n < x ∧ x < n}
+
+theorem Q0201c : countable_union_from_one Q0201c_sets = set.univ := 
 begin
 unfold countable_union_from_one,
 unfold Q1c_sets,
