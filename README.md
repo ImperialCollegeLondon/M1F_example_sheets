@@ -1,4 +1,4 @@
-# M1F Example Sheet
+# M1F Example Sheets
 M1F 2018-19 example sheets in Lean
 
 # Where are the example sheets?
