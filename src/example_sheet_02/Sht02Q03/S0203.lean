@@ -50,11 +50,31 @@ theorem Q3a (n : int) : (3 : ℤ) ∣ n ^ 2 → (3 : ℤ) ∣ n := begin
   }
 end
 
-
 -- Two ways to formalise second part. First way does not use existence
 -- of sqrt(3) (or indeed of the real numbers at all)
 
-theorem no_rational_squared_is_three : ¬ (∃ (q : ℚ), q ^ 2 = 3) := sorry
+theorem no_rational_squared_is_three : ¬ (∃ (q : ℚ), q ^ 2 = 3) :=
+begin
+  rintro ⟨q,Hq⟩,
+  let n := q.num,
+  let d := q.denom,
+  have Hq2 := rat.num_denom q,
+  rw rat.mk_eq_div at Hq2,
+  rw Hq2 at Hq,
+  change ((n : ℚ) / d) ^ 2 = 3 at Hq,
+  rw [pow_two,div_mul_div] at Hq,
+  have Hd : (d : ℚ) ≠ 0 := by simp [rat.denom_ne_zero],
+  have Hd2 : (d : ℚ) * d ≠ 0 := mul_ne_zero Hd Hd,
+  rw [div_eq_iff_mul_eq Hd2,←int.cast_mul] at Hq,
+  change (3 : ℚ) * ((d : ℤ) * (d : ℤ)) = (n * n : ℤ) at Hq,
+  rw ←int.cast_mul at Hq,
+  have H9 :((3 : ℤ) : ℚ) * ((d : ℤ) * (d : ℤ)) = (n * n : ℤ) := by simp [Hq],
+  --have Hdn : (3 : ℤ) * (d * d) = n * n := by simp [Hq],
+  sorry
+end
+
+example : (3 : ℚ) = ((3 : ℤ) : ℚ) := rfl
+
 
 -- second way says that the real number sqrt(3) is not in the image of the map
 -- from the rationals to the reals
