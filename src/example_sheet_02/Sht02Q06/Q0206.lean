@@ -1,3 +1,5 @@
+import data.real.basic
 
+open real
 
-theorem Q6 : square_root.sqrt_abs 2 + square_root.sqrt_abs 6 < square_root.sqrt_abs 15 := sorry
+theorem Q6 : sqrt 2 + sqrt 6 < sqrt 15 := sorry

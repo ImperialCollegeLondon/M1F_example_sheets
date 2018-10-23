@@ -4,8 +4,17 @@
 (c) 2sqrt(18)-3sqrt(8)
 -/
 
-theorem Q7a : M1F.is_irrational (square_root.sqrt_abs 2 + square_root.sqrt_abs (3/2)) := sorry 
+import data.real.irrational
 
-theorem Q7b : M1F.is_irrational (1+square_root.sqrt_abs 2+square_root.sqrt_abs (3/2)) := sorry
+open real
 
-theorem Q7c : exists q:ℚ, (q:ℝ) = 2*square_root.sqrt_abs 18 - 3 * square_root.sqrt_abs 8 := sorry
+-- delete as appropriate
+
+theorem Q0207a_irrat : irrational (sqrt 2 + sqrt (3 / 2)) := sorry 
+theorem Q0207a_rat : ∃ (q : ℚ), sqrt 2 + sqrt (3 / 2) = q := sorry 
+
+theorem Q0207b_irrat : irrational (1 + sqrt 2 + sqrt (3 / 2)) := sorry
+theorem Q0207b_rat : ∃ (q : ℚ), 1 + sqrt 2 + sqrt (3 / 2) = q := sorry
+
+theorem Q0207c_irrat : irrational (2 * sqrt 18 - 3 * sqrt 8) := sorry
+theorem Q0207c_rat : ∃ (q : ℚ), 2 * sqrt 18 - 3 * sqrt 8 = q := sorry
