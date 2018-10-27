@@ -59,4 +59,15 @@ theorem no_rational_squared_is_three : ¬ (∃ (q : ℚ), q ^ 2 = 3) := sorry
 -- second way says that the real number sqrt(3) is not in the image of the map
 -- from the rationals to the reals
 
-theorem no_rational_is_sqrt_three : ¬ (∃ (q : ℚ), (q : ℝ) = real.sqrt 3) := sorry
+theorem no_rational_is_sqrt_three : ¬ (∃ (q : ℚ), (q : ℝ) = real.sqrt 3) := 
+begin
+  intro H,
+  cases H with q Hq,
+  apply no_rational_squared_is_three,
+  existsi q,
+  have H := (real.sqrt_prop 3).2,
+  rw ←Hq at H,
+  rw (show max (0 : ℝ) 3 = (3 : ℚ), by norm_num) at H,
+  rw [←rat.cast_mul,rat.cast_inj] at H,
+  rwa pow_two
+end
