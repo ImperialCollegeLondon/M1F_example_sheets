@@ -1,5 +1,4 @@
 import data.real.irrational
-import analysis.exponential
 
 open real
 
