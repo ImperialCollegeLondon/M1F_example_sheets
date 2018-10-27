@@ -3,8 +3,6 @@ import data.real.basic
 import tactic.ring
 import data.real.irrational
 
-def xx : ℕ  := 5
-
 theorem Q3a (n : int) : (3 : ℤ) ∣ n ^ 2 → (3 : ℤ) ∣ n := begin
   intro H3n2, -- hypothesis that 3 divides n ^ 2
   -- now we write n as 3t+r with r the remainder.
