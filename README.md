@@ -7,8 +7,9 @@ In a directory called `src`.
 
 # Where are all the rest of them?
 
-I am in the process of moving everything here. It takes time.
-If you are that Swedish guy who keeps asking about sheet 2, then you might be interested in the following links:
+I am in the process of moving everything here. It takes time. I am rewriting all my proofs, because 1 year ago my Lean code was even worse than it is now.
+
+If you're interested in this repo, then you might be interested in the following links:
 
 1) The "problem bank" 
 
