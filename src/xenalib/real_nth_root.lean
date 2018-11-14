@@ -35,8 +35,30 @@ begin
   exact le_of_lt (lt_trans Hxpos Hxy),
 end
 
-lemma lt_of_pow_lt {x : ℝ} {n : ℕ} (Hxpos : 0 < x)
-  (Hnpos : 0 < n) {y : ℝ} : x ^ n < y ^ n → x < y := sorry
+lemma lt_of_pow_lt {x y : ℝ} {n : ℕ} (Hxpos : 0 < x) (Hypos : 0 < y) :
+x ^ n < y ^ n → x < y :=
+begin
+  cases n with d,
+  { -- n = 0 true for stupid reasons
+    intro H,
+    rw [pow_zero,pow_zero] at H,
+    apply false.elim (lt_irrefl _ H),
+  },
+  intro Hd,
+  apply lt_of_not_ge,
+  intro Hxy,
+  cases Hxy with Hxyeq Hxylt,
+  { revert Hd,
+    apply not_lt_of_le,
+    apply le_of_eq_or_lt,
+    right,
+    apply pow_mono Hypos (nat.zero_lt_succ _),
+    exact Hxyeq
+  },
+  { rw Hxylt at Hd,
+    apply lt_irrefl _ Hd, 
+  }
+end
 
 theorem nth_root_unique {x y : ℝ} {n : ℕ} (Hxpos : 0 < x) (Hypos : 0 < y)
   (Hnpos : 0 < n) : y ^ n = x → y = nth_root x n :=
