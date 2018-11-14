@@ -1,3 +1,5 @@
+#exit
+-- last year's mess
 import analysis.real tactic.norm_num
 local infix ` ^ ` := monoid.pow
 
