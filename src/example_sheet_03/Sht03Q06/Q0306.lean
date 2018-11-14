@@ -1,4 +1,5 @@
 #exit
+-- mathlib broke my code
 import data.complex.basic
 variables p q r : ℂ
 theorem Q6a : (p+q)+r=p+(q+r) := sorry

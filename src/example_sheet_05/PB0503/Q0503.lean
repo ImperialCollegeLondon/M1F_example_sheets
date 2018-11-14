@@ -1,5 +1,5 @@
 #exit
-
+-- mathlib broke my code
 import algebra.group_power tactic.norm_num algebra.big_operators
 
 theorem Q3a (n : ℕ) : ∃ k, (n+1)+(n+2)+(n+3)+(n+4) = 4*k+2 := sorry
