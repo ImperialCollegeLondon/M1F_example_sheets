@@ -26,7 +26,7 @@ theorem Sht3Q3a : nth_root 3 (3 * 10 ^ 12) < nth_root 2 (2 * 10 ^ 12) := sorry
 
 -- I've made them reals to keep with the theme of the sheet
 -- change the inequality if you think it goes the other way
-theorem Sht3Q3b : (100 : ℝ) ^10000 < 10000^100 := sorry 
+theorem Sht3Q3b : (100 : ℝ) ^ 10000 < (10000 : ℝ) ^ 100 := sorry 
 
 -- replace with the right explicit real number
 theorem Sht3Q03ci : nth_root (2 ^ 22) 2 = (0 : ℝ) := sorry
