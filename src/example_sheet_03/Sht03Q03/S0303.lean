@@ -34,11 +34,58 @@ end
 lemma nth_root_pow_left {x : ℝ} {m n : ℕ} (Hm : 0 < m) (Hx : 0 < x) :
 (nth_root x m) ^ (n * m) = x ^ n := by rw [mul_comm,nth_root_pow_right Hm Hx]
 
+lemma nth_root_pow_left' {x : ℝ} {m n : ℕ} (Hn : 0 < n): --(Hm : 0 < m) (Hx : 0 < x) :
+(nth_root x (m * n)) ^ n = nth_root x m :=
+begin
+  -- first do junk x<=0 case
+  cases (le_or_gt x 0) with Hle0 Hx,  
+  { unfold nth_root,
+    unfold log,
+    split_ifs,
+      exfalso, apply not_lt_of_ge Hle0, exact h,
+    rw [zero_div,zero_div,exp_zero,one_pow],
+  },
+  -- now do junk m = 0 case
+  cases m with m,
+    simp [nth_root],
+  -- now do only case anyone will ever use
+  refine nth_root_unique Hx _ (nat.succ_pos _) _,
+    exact pow_pos (nth_root_pos Hx (mul_pos (nat.succ_pos _) Hn)) _,
+  rw [←pow_mul,mul_comm,nth_root_pow_self Hx],
+  refine mul_pos Hn (nat.succ_pos _),
+end
+
+lemma nth_root_pow_right' {x : ℝ} {m n : ℕ} (Hn : 0 < n): --(Hm : 0 < m) (Hx : 0 < x) :
+(nth_root x (n * m)) ^ n = nth_root x m :=
+begin
+  rw mul_comm,
+  exact nth_root_pow_left' Hn,
+end
+
 lemma nth_root_pow {x : ℝ} {m n : ℕ} (Hm : 0 < m) (Hx : 0 < x) :
 (nth_root x m) ^ n = nth_root (x ^ n) m :=
 begin
   apply nth_root_unique (pow_pos Hx _) (pow_pos (nth_root_pos Hx Hm) _) Hm _,
   rw [←pow_mul,nth_root_pow_left Hm Hx],
+end
+
+lemma nth_root_pow_self' {x : ℝ} {n : ℕ} (Hx : 0 < x) (Hn : 0 < n):
+nth_root (x ^ n) n = x :=
+(nth_root_unique (pow_pos Hx _) Hx Hn rfl).symm
+
+
+lemma nth_root_pow_left'' {x : ℝ} {m n : ℕ} (Hn : 0 < n) (Hx : 0 < x) :
+nth_root (x ^ (m * n)) n = x ^ m :=
+begin
+  rw pow_mul,
+  refine nth_root_pow_self' (pow_pos Hx _) Hn,
+end
+
+lemma nth_root_pow_right'' {x : ℝ} {m n : ℕ} (Hn : 0 < n) (Hx : 0 < x) :
+nth_root (x ^ (n * m)) n = x ^ m :=
+begin
+  rw mul_comm,
+  exact nth_root_pow_left'' Hn Hx,
 end
 
 -- If I hover over the first nth_root_pos below, I don't get a transient
@@ -52,6 +99,7 @@ begin
   have H2 : 0 < (2 : ℝ) := by norm_num,
   have H2T : 0 < 2 * 10 ^ 12 := dec_trivial,
   apply lt_of_pow_lt (nth_root_pos H2 H2T) (nth_root_pos H3 H3T),
+    swap, exact (2 * 10 ^ 12), -- ??
   rw nth_root_pow_self H2 H2T,
   -- why does this line cause chaos?
   -- apply lt_of_pow_lt H3 (pow_pos (nth_root_pos H2 H2T) (2 * 10 ^ 12)),
@@ -65,25 +113,6 @@ end
 
 -- Q3b
 
--- nat.pow_lt_pow_of_lt_right :
--- ∀ {x : ℕ}, x > 1 → ∀ {i j : ℕ}, i < j → x ^ i < x ^ j
-
-variable (x : ℝ) -- or [linear_ordered_field]
-theorem pow_lt_pow_of_lt {i j : ℕ} (Hx : x > 1) (Hij : i < j) : x^i < x^j :=
-begin
-  sorry
-end
-
-open nat
-
-theorem nat.pow_lt_pow_of_lt_right' {x : ℕ} (H : x > 1) {i j : ℕ} (h : i < j) : x^i < x^j :=
-begin
-  have xpos := lt_of_succ_lt H,
-  refine lt_of_lt_of_le _ (pow_le_pow_of_le_right xpos h),
-  rw [← mul_one (x^i), nat.pow_succ],
-  exact nat.mul_lt_mul_of_pos_left H (pos_pow_of_pos _ xpos)
-end
-
 /- Mario proof -/
 variables {α : Type*} [linear_ordered_semiring α]
 theorem pow_lt_pow {a : α} {n m : ℕ} (ha : 1 < a) (h : n < m) : a ^ n < a ^ m :=
@@ -91,32 +120,6 @@ lt_of_lt_of_le
   ((lt_mul_iff_one_lt_left (pow_pos (lt_trans zero_lt_one ha) _)).2 ha)
   (pow_le_pow (le_of_lt ha) h)
 
-theorem pow_lt_pow' {a : α} {n m : ℕ} (ha : 1 < a) (h : n < m) : a ^ n < a ^ m :=
-begin
-  apply lt_of_lt_of_le,
-  { exact ((lt_mul_iff_one_lt_left (pow_pos (lt_trans zero_lt_one ha) _)).2 ha)},
-  exact (pow_le_pow (le_of_lt ha) h)
-end
-
-theorem pow_lt_pow'' {a : α} {n m : ℕ} (ha : 1 < a) (h : n < m) : a ^ n < a ^ m :=
-begin
-  apply lt_of_lt_of_le,
-  { refine (lt_mul_iff_one_lt_left _).2 ha,
-    refine pow_pos _ _,
-    -- got it
-    exact lt_trans zero_lt_one ha
-  },
-  { refine pow_le_pow _ h, -- dirty trick?
-    exact le_of_lt ha
-  }
-end
-
--- I want a button which puts
---set_option pp.all true
--- on and off
-
--- I've made them reals to keep with the theme of the sheet
--- change the inequality if you think it goes the other way
 theorem Sht3Q3b : (10000 : ℝ) ^ 100 < (100 : ℝ) ^ 10000 := begin
   rw (show 10000 = 100 * 100, by norm_num),
   rw pow_mul,
@@ -131,10 +134,21 @@ theorem Sht3Q3b : (10000 : ℝ) ^ 100 < (100 : ℝ) ^ 10000 := begin
 end
 
 -- replace with the right explicit real number
-theorem Sht3Q03ci : nth_root (2 ^ 22) 2 = (0 : ℝ) := sorry
+theorem Sht3Q03ci : nth_root (2 ^ 22) 2 = 2 ^ 11 :=
+begin
+  show nth_root (2 ^ (2 * 11)) 2 = 2 ^ 11,
+  exact nth_root_pow_right'' (by norm_num) (by norm_num),
+end
 
+--set_option pp.all true
 -- replace with the right explicit real number
-theorem Sht3Q03cii : nth_root (2 ^ 2 ^ 22) 2 = (0 : ℝ) := sorry
-
+theorem Sht3Q03cii : nth_root (2 ^ 2 ^ 22) 2 = 2 ^ 2 ^ 21 :=
+begin
+  change nth_root (2 ^ 2 ^ (21 + 1)) 2 = 2 ^ 2 ^ 21,
+  rw nat.pow_succ 2 21,
+  rw nth_root_pow_left'' _ _,
+    norm_num,
+  norm_num
+end
 
 

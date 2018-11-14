@@ -56,15 +56,17 @@ begin
   intro Hd,
   apply lt_of_not_ge,
   intro Hxy,
-  cases Hxy with Hxyeq Hxylt,
-  { revert Hd,
+  change y ≤ x at Hxy,
+  cases eq_or_lt_of_le Hxy with Hxyeq Hxylt,
+  case or.inr {
+    revert Hd,
     apply not_lt_of_le,
     apply le_of_eq_or_lt,
     right,
     apply pow_mono Hypos (nat.zero_lt_succ _),
-    exact Hxyeq
+    exact Hxylt
   },
-  { rw Hxylt at Hd,
+  { rw Hxyeq at Hd,
     apply lt_irrefl _ Hd, 
   }
 end
