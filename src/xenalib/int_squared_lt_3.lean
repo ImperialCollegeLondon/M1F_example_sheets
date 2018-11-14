@@ -48,24 +48,24 @@ begin
     have Hleft := H.left,
     rw [Hy,pow_two,←int.cast_mul] at Hleft,
     have Htemp : (3 : ℝ) = (3 : ℤ),
-      refl,
+      simp,
     rw Htemp at Hleft,
     rw [int.cast_lt,←pow_two] at Hleft,
     rw Hy,
     cases int_squared_lt_three Hleft with h h,
-      left,rw h,refl,
+      left,rw h,simp,
     cases h with h h,
       right,left,rw h,refl,
-      right,right,rw h,refl
+      right,right,rw h,simp
   },
   { intro H,
     cases H,
       rw H,
-      split,norm_num,existsi (-1 : ℤ),refl,
+      split,norm_num,existsi (-1 : ℤ),simp,
     cases H,
       rw H,
       split,norm_num,existsi (0 : ℤ),refl,
     rw H,
-    split,norm_num,existsi (1 : ℤ),refl
+    split,norm_num,existsi (1 : ℤ),simp
   }
 end
