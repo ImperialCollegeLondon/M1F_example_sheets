@@ -18,8 +18,8 @@ theorem nth_root_power {x : ℝ} {n : ℕ} (Hxpos : 0 < x) (Hnpos : 0 < n) : (nt
     rw [nat.cast_ne_zero], apply ne_of_gt Hnpos,
   end
 
-lemma nth_power_mono {x : ℝ} {n : ℕ} (Hxpos : 0 < x)
-  (Hnpos : 0 < n) (y : ℝ) : x < y → x ^ n < y ^ n :=
+lemma pow_mono {x : ℝ} {n : ℕ} (Hxpos : 0 < x)
+  (Hnpos : 0 < n) {y : ℝ} : x < y → x ^ n < y ^ n :=
 begin
   cases n with d Hd,
     cases Hnpos,
@@ -35,6 +35,9 @@ begin
   exact le_of_lt (lt_trans Hxpos Hxy),
 end
 
+lemma lt_of_pow_lt {x : ℝ} {n : ℕ} (Hxpos : 0 < x)
+  (Hnpos : 0 < n) {y : ℝ} : x ^ n < y ^ n → x < y := sorry
+
 theorem nth_root_unique {x y : ℝ} {n : ℕ} (Hxpos : 0 < x) (Hypos : 0 < y)
   (Hnpos : 0 < n) : y ^ n = x → y = nth_root x n :=
 begin
@@ -42,16 +45,17 @@ begin
   rw ←nth_root_power Hxpos Hnpos at Hyn,
   have H1 := lt_or_ge y (nth_root x n),
   cases H1 with Hlt Hge,
-    exfalso,
+  { exfalso,
     revert Hyn,
     apply ne_of_lt,
-    exact nth_power_mono Hypos Hnpos (nth_root x n) Hlt,
+    refine pow_mono Hypos Hnpos Hlt},
+    exact pow_mono Hypos Hnpos (nth_root x n) Hlt,
   change nth_root x n ≤ y at Hge,
   cases (eq_or_lt_of_le Hge) with Heq Hlt,
     rw Heq,
   exfalso,
   revert Hyn,
   apply ne_of_gt,
-  exact nth_power_mono (nth_root_pos Hxpos Hnpos) Hnpos y Hlt,
-end
+  exact pow_mono (nth_root_pos Hxpos Hnpos) Hnpos Hlt,
+  end
 
