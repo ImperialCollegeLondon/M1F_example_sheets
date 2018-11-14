@@ -1,25 +1,32 @@
 import analysis.real
 import analysis.exponential
+import tactic.norm_num
 
 namespace real
 
 noncomputable definition nth_root (x : ℝ) (n : ℕ) : ℝ :=
 exp (log x / n)
 
-lemma nth_root_pos {x : ℝ} {n : ℕ} (Hxpos : x > 0) (Hnpos : n > 0) : nth_root x n > 0 := exp_pos _
+-- I should get Lean to automatically supply proofs using norm_num or dec_trivial
+-- somehow?
+lemma nth_root_pos {x : ℝ} {n : ℕ} (Hxpos : 0 < x) (Hnpos : 0 < n) :
+0 < nth_root x n :=
+exp_pos _
 
-theorem exp_mul {x : ℝ} : ∀ n : ℕ, exp (n * x) = (exp x) ^ n
+theorem exp_mul {x : ℝ} :
+∀ n : ℕ, exp (n * x) = (exp x) ^ n
 | 0 := by simp
 | (nat.succ n) := by rw [pow_succ', nat.cast_add_one, add_mul, exp_add, ←exp_mul, one_mul]
 
-theorem nth_root_power {x : ℝ} {n : ℕ} (Hxpos : 0 < x) (Hnpos : 0 < n) : (nth_root x n) ^ n = x :=
-  begin
-    rw [nth_root, ←exp_mul, mul_div_cancel', exp_log Hxpos],
-    rw [nat.cast_ne_zero], apply ne_of_gt Hnpos,
-  end
+theorem nth_root_pow_self {x : ℝ} {n : ℕ} (Hxpos : 0 < x) (Hnpos : 0 < n) :
+(nth_root x n) ^ n = x :=
+begin
+  rw [nth_root, ←exp_mul, mul_div_cancel', exp_log Hxpos],
+  rw [nat.cast_ne_zero], apply ne_of_gt Hnpos,
+end
 
-lemma pow_mono {x : ℝ} {n : ℕ} (Hxpos : 0 < x)
-  (Hnpos : 0 < n) {y : ℝ} : x < y → x ^ n < y ^ n :=
+lemma pow_mono {x : ℝ} {n : ℕ} (Hxpos : 0 < x) (Hnpos : 0 < n) {y : ℝ} :
+x < y → x ^ n < y ^ n :=
 begin
   cases n with d Hd,
     cases Hnpos,
@@ -64,7 +71,7 @@ theorem nth_root_unique {x y : ℝ} {n : ℕ} (Hxpos : 0 < x) (Hypos : 0 < y)
   (Hnpos : 0 < n) : y ^ n = x → y = nth_root x n :=
 begin
   intro Hyn,
-  rw ←nth_root_power Hxpos Hnpos at Hyn,
+  rw ←nth_root_pow_self Hxpos Hnpos at Hyn,
   have H1 := lt_or_ge y (nth_root x n),
   cases H1 with Hlt Hge,
   { exfalso,
