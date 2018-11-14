@@ -85,9 +85,12 @@ begin
   apply set.eq_univ_of_forall,
   intro x,
   let m := ceil (1 + abs x), -- an integer
-  have Hm : 1 ≤ m := int.cast_le.1 
-    (le_trans (le_add_of_nonneg_right $ abs_nonneg _)
-      (le_ceil (1 + abs x)) : (1 : ℝ) ≤ m),
+  have Hm : (1 : ℤ) ≤ m,
+    apply int.cast_le.1,
+    rw (show ((1 : ℤ) : ℝ) = 1, by simp),
+    refine le_trans _ (le_ceil (1 + abs x)),
+    refine le_add_of_nonneg_right _,
+    exact abs_nonneg _,
   let i := int.nat_abs m, -- the natural we want
   have Hi : m = i := int.eq_nat_abs_of_zero_le (le_of_lt Hm),
   existsi i,
@@ -116,19 +119,22 @@ begin
   apply set.subset.antisymm,
   { -- intersection ⊆ (-1,1)
     intros x Hx,
-    exact Hx 1 zero_lt_one,
+    have Htemp := Hx 1 zero_lt_one,
+    unfold Q0201d_sets at Htemp,
+    convert Htemp,
+    simp,
   },
   { -- (-1,1) ⊆ intersection
     rintros x ⟨Hm,Hp⟩ i Hi,
     split,
     { refine lt_of_le_of_lt _ Hm,
       apply neg_le_neg,
-      show ((1 : ℕ) : ℝ) ≤ i,
+      rw (show 1 = ((1 : ℕ) : ℝ), by simp),
       rw nat.cast_le,
       exact Hi
     },
     { refine lt_of_lt_of_le Hp _,
-      show ((1 : ℕ) : ℝ) ≤ i,
+      rw (show 1 = ((1 : ℕ) : ℝ), by simp),
       rw nat.cast_le,
       exact Hi     
     }
