@@ -1,3 +1,5 @@
+#exit
+-- mathlib broke my solns
 import analysis.real tactic.norm_num algebra.group_power
 
 lemma avg_lt_max {mn mx: ℝ} (H : mn < mx) : (mn+mx) / 2 < mx :=

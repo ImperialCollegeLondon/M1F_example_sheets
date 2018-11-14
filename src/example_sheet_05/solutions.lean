@@ -1,3 +1,4 @@
+#exit
 import xenalib.zmod algebra.group_power tactic.norm_num algebra.big_operators
 
 local infix ` ^ ` := monoid.pow
