@@ -18,6 +18,11 @@ begin
   exact mul_pos H1 H,
 end
 
+-- Kenny Lau version, for those interested
+lemma div_pos_iff_mul_pos' (x y : ℝ) (Hy : y ≠ 0) : 0 < x * y ↔ 0 < x / y :=
+by rw [← @mul_lt_mul_right _ _ _ (x/y) _ (mul_self_pos Hy)];
+  rw [zero_mul, ← mul_assoc, div_mul_cancel _ Hy]
+
 -- this seems like a huge effort. Maybe I'm missing something.
 theorem Q4 : { x : ℝ | x ≠ 0 ∧ 3 * x + 1 / x < 4 } = 
   {x : ℝ | x < 0 ∨ ((1 : ℝ) / 3 < x ∧ x < 1)} :=
@@ -104,4 +109,48 @@ begin
     norm_num,
   apply le_trans _ h,
   norm_num,
+end
+
+-- Kenny Lau version
+theorem Q4' : { x : ℝ | x ≠ 0 ∧ 3 * x + 1 / x < 4 } =
+  {x : ℝ | x < 0 ∨ ((1 : ℝ) / 3 < x ∧ x < 1)} :=
+begin
+  ext x,
+  rcases lt_trichotomy x 0 with hxneg | hx0 | hxpos,
+  { refine iff_of_true ⟨ne_of_lt hxneg, _⟩ (or.inl hxneg),
+    refine lt_trans (add_neg (mul_neg_of_pos_of_neg _ hxneg) (one_div_neg_of_neg hxneg)) _;
+    norm_num },
+  { subst x, norm_num },
+  show x ≠ 0 ∧ 3 * x + 1 / x < 4 ↔ x < 0 ∨ ((1 : ℝ) / 3 < x ∧ x < 1),
+  rw [eq_true_intro (ne_of_gt hxpos)],
+  rw [true_and],
+  rw [eq_false_intro (not_lt_of_gt hxpos)],
+  rw [false_or],
+  rw [← mul_lt_mul_right hxpos],
+  rw [add_mul],
+  rw [one_div_mul_cancel (ne_of_gt hxpos)],
+  rw [div_lt_iff (show (0:ℝ) < 3, by norm_num)],
+  split,
+  { assume h : 3 * x * x + 1 < 4 * x,
+    replace h := sub_neg_of_lt h,
+    rw [show 3 * x * x + 1 - 4 * x = (1 - x * 3) * (1 - x), by ring] at h,
+    have : 1 < x * 3,
+    { apply lt_of_not_ge,
+      assume h2 : x * 3 ≤ 1,
+      replace h := neg_of_mul_neg_left h (sub_nonneg_of_le h2),
+      refine not_lt_of_le h2 _,
+      refine lt_trans (show (1:ℝ) < 3, by norm_num) _,
+      replace h := lt_of_sub_neg h,
+      rw [← mul_lt_mul_right (show (0:ℝ) < 3, by norm_num)] at h,
+      rwa [one_mul] at h },
+    refine ⟨this, lt_of_sub_pos _⟩,
+    apply lt_of_not_ge,
+    assume h3 : 1 - x ≤ 0,
+    apply not_le_of_lt h,
+    exact mul_nonneg_of_nonpos_of_nonpos (le_of_lt (sub_neg_of_lt this)) h3 },
+  { assume h : 1 < x * 3 ∧ x < 1,
+    cases h with h1 h2,
+    apply lt_of_sub_neg,
+    rw [show 3 * x * x + 1 - 4 * x = (1 - x * 3) * (1 - x), by ring],
+    exact mul_neg_of_neg_of_pos (sub_neg_of_lt h1) (sub_pos_of_lt h2) }
 end
