@@ -1,7 +1,7 @@
 import analysis.real
 import analysis.exponential
 
-open real
+namespace real
 
 noncomputable definition nth_root (x : ℝ) (n : ℕ) : ℝ :=
 exp (log x / n)
@@ -80,3 +80,4 @@ begin
   exact pow_mono (nth_root_pos Hxpos Hnpos) Hnpos Hlt,
   end
 
+end real
