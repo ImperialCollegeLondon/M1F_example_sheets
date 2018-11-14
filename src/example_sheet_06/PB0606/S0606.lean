@@ -1,3 +1,5 @@
+#exit
+-- last years soln broke
 import analysis.real tactic.norm_num algebra.group_power
 
 def S (a : {n : ℕ // n ≥ 1} → ℝ) 
