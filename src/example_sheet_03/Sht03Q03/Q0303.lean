@@ -22,7 +22,7 @@ theorem nth_root_mono' {x : ℝ} {n : ℕ} (Hxpos : 0 < x)
   (Hnpos : 0 < n) (y : ℝ) : x < y → x ^ n < y ^ n := sorry
 
 -- change the inequality if you think it goes the other way
-theorem Sht3Q3a : nth_root 3 (3*10^12) < nth_root 2 (2 * 10 ^ 12) := sorry
+theorem Sht3Q3a : nth_root 3 (3 * 10 ^ 12) < nth_root 2 (2 * 10 ^ 12) := sorry
 
 -- change the inequality if you think it goes the other way
 theorem Sht3Q3b : 100^10000 < 10000^100 := sorry 
