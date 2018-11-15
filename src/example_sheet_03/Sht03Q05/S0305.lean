@@ -36,8 +36,9 @@ begin
   rw (show ((3 : ℝ) - 1 = 2), by norm_num),
 end
 
--- change the RHS to the correct explicit range
 theorem Q0305c : abv (x - 2) < abv (x - 4) ↔ x < 3 :=
 begin
-  
+  unfold abv,
+  split_ifs;split;intro H;linarith
 end
+-- in 2017 that proof was over 40 lines long!
