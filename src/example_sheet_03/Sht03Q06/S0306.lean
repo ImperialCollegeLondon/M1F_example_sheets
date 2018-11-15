@@ -41,11 +41,19 @@ end
 -- there is a natural map from the reals to the complexes.
 instance : has_coe ℝ ℂ := ⟨λ x, ⟨x,0⟩⟩
 
+-- I'll explain these later.
+@[simp] lemma coe_re (x : ℝ) : (x : ℂ).re = x := rfl
+@[simp] lemma coe_im (x : ℝ) : (x : ℂ).im = 0 := rfl
+
 -- We define the complex number zero to be the real number zero.
 protected definition zero : ℂ := (0 : ℝ)
 
 -- We set up the notation `0`
 instance : has_zero ℂ := ⟨complex.zero⟩
+
+-- I'll explain these later.
+@[simp] lemma zero_re : (0 : ℂ).re = 0 := rfl
+@[simp] lemma zero_im : (0 : ℂ).im = 0 := rfl
 
 -- We define the complex number one to be the real number one.
 protected definition one : ℂ := (1 : ℝ)
@@ -53,6 +61,7 @@ protected definition one : ℂ := (1 : ℝ)
 -- We set up the notation `1`
 instance : has_one ℂ := ⟨complex.one⟩
 
+-- I'll explain these later.
 @[simp] lemma one_re : (1 : ℂ).re = 1 := rfl
 @[simp] lemma one_im : (1 : ℂ).im = 0 := rfl
 
@@ -62,6 +71,8 @@ protected definition add : ℂ → ℂ → ℂ :=
 -- There is a reason I don't use the equation compiler here.
 
 instance : has_add ℂ := ⟨complex.add⟩
+
+-- OK now I'll explain the simp lemmas.
 
 -- The strategy for proving a whole bunch of basic theorems
 -- like associativity of addition, commutativity of multiplication
@@ -108,7 +119,7 @@ open complex
 variables p q r : ℂ
 
 meta def check_on_real_and_imag_parts : tactic unit := do
-`[apply ext_iff.2],
+`[apply ext],
 `[split],
 `[all_goals {simp}],
 `[all_goals {ring}]
