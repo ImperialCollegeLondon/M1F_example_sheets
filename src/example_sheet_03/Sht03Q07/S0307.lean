@@ -38,7 +38,7 @@ theorem Q7 (H : z ^ 2 = -1) : z = I ∨ z = -I :=
 begin
   rw ext_iff at H,
   cases H with H1 H2,
-    rw pow_two_eq_mul_self at *,
+  rw pow_two_eq_mul_self at *,
   simp at *,
   rw [mul_comm,←mul_two] at H2,
   -- 2 * Re(z) * Im(z) = 0
