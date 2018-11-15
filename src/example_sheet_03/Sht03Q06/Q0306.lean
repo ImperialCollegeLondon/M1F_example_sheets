@@ -1,7 +1,3 @@
--- Definition of the complexes from scratch, assuming
--- everything about the real numbers, but proving everything
--- about the complex numbers.
-
 import data.real.basic
 
 -- a complex number z is a pair of reals z.re and z.im
@@ -19,13 +15,13 @@ protected definition add : ℂ → ℂ → ℂ :=
 instance : has_add ℂ := ⟨complex.add⟩
 
 protected definition mul : ℂ → ℂ → ℂ :=
-λ z w, ⟨z.re * w.re- z.im * w.im, z.re * w.im + z.im * w.re⟩
+λ z w, ⟨z.re * w.re - z.im * w.im, z.re * w.im + z.im * w.re⟩
 
 -- We set up the notation `*`
 instance : has_mul ℂ := ⟨complex.mul⟩
 
 definition conjugate : ℂ → ℂ :=
-λ z, ⟨z.re,-z.im⟩
+λ z, ⟨z.re, -z.im⟩
 
 end complex
 
