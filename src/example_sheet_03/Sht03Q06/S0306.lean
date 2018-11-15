@@ -53,6 +53,9 @@ protected definition one : ℂ := (1 : ℝ)
 -- We set up the notation `1`
 instance : has_one ℂ := ⟨complex.one⟩
 
+@[simp] lemma one_re : (1 : ℂ).re = 1 := rfl
+@[simp] lemma one_im : (1 : ℂ).im = 0 := rfl
+
 -- We define addition on complex numbers in the usual way
 protected definition add : ℂ → ℂ → ℂ :=
 λ z w, ⟨z.re + w.re, z.im + w.im⟩
