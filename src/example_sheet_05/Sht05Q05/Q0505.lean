@@ -1,4 +1,5 @@
-import algebra.group_power tactic.norm_num algebra.big_operators
+-- change 37 to the correct answer
 
-theorem Q5 : (¬ (∃ a b c : ℕ, 6*a+9*b+20*c = 43))
-             ∧ ∀ m, m ≥ 44 → ∃ a b c : ℕ, 6*a+9*b+20*c = m := sorry
+theorem Q0505 :
+  ¬ (∃ a b c : ℕ, 6 * a + 9 * b + 20 * c = 37)
+  ∧ ∀ m, m > 37 → ∃ a b c : ℕ, 6 * a + 9 * b + 20 * c = m := sorry
