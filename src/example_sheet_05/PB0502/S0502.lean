@@ -1,5 +1,12 @@
 import algebra.group_power
 
+-- This is more of a pain than it should be because we don't have induction starting at 2,
+-- we only have induction starting at zero. Reid Barton says that `induction ... using ...`
+-- should be usable though!
+
+-- My second attempt is better than my first. I am hoping my third will be one I'm
+-- happy with, when I get round to understanding how to use `using`.
+
 theorem Q0502 (n : ℕ) : n ≥ 2 → 4 ^ n > 3 ^ n + 2 ^ n :=
 begin
   intro Hn2,
