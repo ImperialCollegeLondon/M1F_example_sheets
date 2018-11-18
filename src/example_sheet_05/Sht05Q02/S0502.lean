@@ -1,7 +1,7 @@
 import algebra.group_power
 import xenalib.modified_induction
 
-theorem S0502'' (n : ℕ) : n ≥ 2 → 4 ^ n > 3 ^ n + 2 ^ n :=
+theorem S0502 (n : ℕ) : n ≥ 2 → 4 ^ n > 3 ^ n + 2 ^ n :=
 begin
   apply modified_induction,
     -- case n = 2
