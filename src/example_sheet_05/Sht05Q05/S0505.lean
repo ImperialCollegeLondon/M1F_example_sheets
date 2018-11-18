@@ -12,7 +12,8 @@ theorem Q0505 :
   ∧ ∀ m, m > 43 → ∃ a b c : ℕ, 6 * a + 9 * b + 20 * c = m :=
 begin
   split,
-  { rintro ⟨a,b,c,H⟩,
+  { -- first show 43 can't be done.
+    rintro ⟨a,b,c,H⟩,
     cases c with c,
       -- case c = 0
       rw [mul_zero,add_zero] at H,
@@ -47,8 +48,11 @@ begin
       ...    = 43 : by rw H,
     revert this, exact dec_trivial
   },
+
   -- now the proof that it's true for 44 or more by induction
-  
+
+  -- first formalise the hypothesis we're going to prove.
+    
   let P : ℕ → Prop := λ n, ∀ r : ℕ, r < 6 → (∃ (a b c : ℕ), 6 * a + 9 * b + 20 * c = 44 + (r + 6 * n)),
   
   -- reduce to checking P n for all n
@@ -64,22 +68,16 @@ begin
   -- now prove P n for all n by induction
 
   intro n, induction n with d Hd,
-    -- base case
-    intros r Hlt6,
-    cases (lt_or_eq_of_le (nat.le_of_succ_le_succ Hlt6)) with Hlt5 Heq5,
-      cases (lt_or_eq_of_le (nat.le_of_succ_le_succ Hlt5)) with Hlt4 Heq4,
-        cases (lt_or_eq_of_le (nat.le_of_succ_le_succ Hlt4)) with Hlt3 Heq3,
-          cases (lt_or_eq_of_le (nat.le_of_succ_le_succ Hlt3)) with Hlt2 Heq2,
-            cases (lt_or_eq_of_le (nat.le_of_succ_le_succ Hlt2)) with Hlt1 Heq1,
-              cases (lt_or_eq_of_le (nat.le_of_succ_le_succ Hlt1)) with Hlt0 Heq0,
-                cases Hlt0,
-              rw Heq0, exact ⟨4, 0, 1, rfl⟩,
-            rw Heq1, exact ⟨0, 5, 0, rfl⟩,
-          rw Heq2, exact ⟨1, 0, 2, rfl⟩,
-        rw Heq3, exact ⟨0, 3, 1, rfl⟩,
-      rw Heq4, exact ⟨8, 0, 0, rfl⟩,
-    rw Heq5, exact ⟨0, 1, 2, rfl⟩,
-
+    -- base case, `exacts` trick due to Kenny
+    { intros r Hr,
+      repeat { cases Hr with _ Hr },
+      exacts [⟨0, 1, 2, rfl⟩,
+              ⟨8, 0, 0, rfl⟩,
+              ⟨0, 3, 1, rfl⟩,
+              ⟨1, 0, 2, rfl⟩,
+              ⟨0, 5, 0, rfl⟩,
+              ⟨4, 0, 1, rfl⟩]
+    },
   -- inductive step
   intros r Hr,
   rcases Hd r Hr with ⟨a, b, c, H⟩,
