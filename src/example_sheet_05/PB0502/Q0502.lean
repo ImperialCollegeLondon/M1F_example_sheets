@@ -1,5 +1,5 @@
-#exit
--- mathlib broke my code
-import algebra.group_power tactic.norm_num algebra.big_operators
+import algebra.group_power -- to get power function on naturals, which
+-- is not in core Lean
 
-theorem Q2 (n : ℕ) : n ≥ 2 → nat.pow 4 n > nat.pow 3 n + nat.pow 2 n :=
+theorem Q0502 (n : ℕ) : n ≥ 2 → 4 ^ n > 3 ^ n + 2 ^ n := sorry
+
