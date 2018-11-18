@@ -21,6 +21,26 @@ begin
   ⊢ 4 ^ nat.succ e > 3 ^ nat.succ e + 2 ^ nat.succ e
   -/
   exact calc
+    4 ^ nat.succ d > (3 ^ d + 2 ^ d) * 4 : mul_lt_mul_of_pos_right He dec_trivial
+    ...            = 3 ^ d * 4 + 2 ^ d * 4 : by rw add_mul
+    ...            ≥ 3 ^ d * 3 + 2 ^ d * 4 : add_le_add_right (nat.mul_le_mul_left _ (dec_trivial)) _
+    ...            ≥ 3 ^ d * 3 + 2 ^ d * 2 : add_le_add_left (nat.mul_le_mul_left _ (dec_trivial)) _,
+end
+
+theorem Q0502' (n : ℕ) : n ≥ 2 → 4 ^ n > 3 ^ n + 2 ^ n :=
+begin
+  induction n with d Hd,
+    exact dec_trivial,
+  -- now pick up the pieces for modified induction
+  intro Hs, cases Hs,
+    exact dec_trivial, -- base case n = 2,
+  replace Hd := Hd Hs_a, clear Hs_a,
+  /-
+  d : ℕ,
+  Hd : 4 ^ d > 3 ^ d + 2 ^ d
+  ⊢ 4 ^ nat.succ d > 3 ^ nat.succ d + 2 ^ nat.succ d
+  -/
+    exact calc
     4 ^ nat.succ d > (3 ^ d + 2 ^ d) * 4 : mul_lt_mul_of_pos_right Hd dec_trivial
     ...            = 3 ^ d * 4 + 2 ^ d * 4 : by rw add_mul
     ...            ≥ 3 ^ d * 3 + 2 ^ d * 4 : add_le_add_right (nat.mul_le_mul_left _ (dec_trivial)) _
