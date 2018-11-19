@@ -1,60 +1,47 @@
-#exit
--- mathlib broke my solns
-import analysis.real tactic.norm_num algebra.group_power
+import data.real.basic
+import data.set.basic
+import tactic.norm_num
+import tactic.linarith
 
-lemma avg_lt_max {mn mx: ℝ} (H : mn < mx) : (mn+mx) / 2 < mx :=
+example : set ℝ := ∅ 
+
+definition is_bounded_above (S : set ℝ) := ∃ b : ℝ, ∀ s ∈ S, s ≤ b
+
+-- chose which one to prove, comment out the other.
+
+theorem Q0603_yes : ∃ S : set ℝ, (∀ s ∈ S, ∃ t ∈ S, s < t) ∧ is_bounded_above S :=
 begin
-  apply (mul_lt_mul_right (show (0:ℝ)<2, by norm_num)).1,
-  rw [div_mul_cancel _ (two_ne_zero)],
-  simp [H,mul_two],
+  existsi (∅ : set ℝ),
+  split,
+  { intro s,
+    intro Hs,
+    cases Hs,
+  },
+  { existsi (37 : ℝ),
+    intro s,
+    intro Hs,
+    cases Hs
+  }
 end
-
-lemma min_lt_avg {mn mx: ℝ} (H : mn < mx) : mn < (mn+mx) / 2 :=
+theorem Q0603_yes' : ∃ S : set ℝ, (∀ s ∈ S, ∃ t ∈ S, s < t) ∧ is_bounded_above S :=
 begin
-  apply (mul_lt_mul_right (show (0:ℝ)<2, by norm_num)).1,
-  rw [div_mul_cancel _ (two_ne_zero)],
-  simp [H,mul_two],
+  let negreals := {x : ℝ | x < 0}, 
+  existsi negreals,
+  split,
+  { intro s,
+    intro Hs,
+    change s < 0 at Hs,
+    existsi (s / 2),
+    split,
+    { change s / 2 < 0,
+      linarith,
+    },
+    linarith,
+  },
+  { existsi (37 : ℝ),
+    intro s,
+    intro Hs,
+    change s < 0 at Hs,
+    linarith,
+  }
 end
-
-lemma lub_open (y : ℝ) : is_lub {x : ℝ | x < y} y :=
-begin
-split,
-{ intro a,
-  exact le_of_lt },
-unfold lower_bounds,
-intro b,
-intro Hb,
-refine le_of_not_gt _,
-intro Hnb,
-let c:=(b+y)/2,
-unfold upper_bounds at Hb,
-have H2 := Hb c,
-clear Hb,
-have H : c ∈ {x : ℝ | x < y},
-{ exact avg_lt_max Hnb,
-},
-have Hcleb := H2 H,
-have Hbltc : b < c := min_lt_avg Hnb,
-exact not_lt.2 Hcleb Hbltc,
-end
-
-def S3a : set ℝ := {x : ℝ | x<0}
-
-theorem Q3a : is_lub (S3a) 0 := sorry
-
-def S3b : set ℝ := {x : ℝ | ∃ y : ℚ, x = ↑y}
-
-theorem Q3b : ∀ b : ℝ, ¬ (is_lub (S3b) b) := sorry
-
-lemma pow_two_eq_mul_self {x : ℝ} : x^2=x*x :=
-begin
-unfold monoid.pow,simp,
-end
-
-def S3c : set ℝ := {x : ℝ | (x+1)^2 < x^2} -- x<-0.5
-
-theorem Q3c : is_lub (S3c) (-1/2) := sorry
-
-def S3d : set ℝ := {x : ℝ | (∃ q : ℚ, x=↑q) ∧ 1 < x ∧ x < 2}
-
-theorem Q3d : is_lub S3d 2 := sorry
