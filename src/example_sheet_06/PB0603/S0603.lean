@@ -7,8 +7,7 @@ example : set ℝ := ∅
 
 definition is_bounded_above (S : set ℝ) := ∃ b : ℝ, ∀ s ∈ S, s ≤ b
 
--- chose which one to prove, comment out the other.
-
+-- the empty set works
 theorem Q0603_yes : ∃ S : set ℝ, (∀ s ∈ S, ∃ t ∈ S, s < t) ∧ is_bounded_above S :=
 begin
   existsi (∅ : set ℝ),
@@ -23,6 +22,8 @@ begin
     cases Hs
   }
 end
+
+-- but many non-empty sets work too
 theorem Q0603_yes' : ∃ S : set ℝ, (∀ s ∈ S, ∃ t ∈ S, s < t) ∧ is_bounded_above S :=
 begin
   let negreals := {x : ℝ | x < 0}, 
