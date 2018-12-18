@@ -51,23 +51,37 @@ end
 
 def Sc : set ℝ := {x : ℝ | (x + 1) ^ 2 < x ^ 2}
 
+lemma Q0604.helper_lemma (b : ℝ) : is_lub {x : ℝ | x < b} b :=
+begin
+  split,
+    intros x H,
+    change x < b at H,
+    linarith,
+  intro y,
+  intro Hy,
+  apply le_of_not_gt,
+  intro Hb,
+  have Hs : (y + b) / 2 < b := by linarith,
+  have H := Hy ((y + b) / 2) Hs,
+  linarith,
+end
+
 theorem Q4c_lub : is_lub Sc (-1/2) :=
 begin
   have H : Sc = {x : ℝ | 2 * x + 1 < 0},
   { ext,
     unfold Sc,
     change (x + 1) ^ 2 < x ^ 2 ↔ 2 * x + 1 < 0,
-    sorry
+    rw (⟨sub_neg_of_lt,lt_of_sub_neg⟩ : (x + 1) ^ 2 < x ^ 2 ↔ (x + 1) ^ 2 - x ^ 2 < 0),
+    rw (show (x + 1) ^ 2 - x ^ 2 = 2 * x + 1, by ring),
   },
-  split,
-  sorry,sorry,
+  convert Q0604.helper_lemma _,
+  rw H,
+  ext,simp,split;intro H2;linarith,
 end
 
-
-theorem Q3c_no_ub : has_no_ub Sc := sorry
+-- last part still not finished
 
 def Sd : set ℝ := {x : ℝ | is_rational x ∧ 1 < x ∧ x < 2}
 
-theorem Q3d_lub : is_lub Sd 37 := sorry
-
-theorem Q3d_no_ub : has_no_ub Sd := sorry
+theorem Q4d_lub : is_lub Sd 2 := sorry
