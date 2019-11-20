@@ -1,7 +1,7 @@
 --import algebra.group_power tactic.norm_num algebra.big_operators
 
 def Fib : ℕ → ℕ
-| 0 := 37 -- question only defines F_n for n>=1 so set F_0 = junk value
+| 0 := 0 -- question only defines F_n for n>=1 so set F_0 = junk value
 | 1 := 1
 | 2 := 1
 | (n + 3) := Fib (n + 1) + Fib (n + 2)
