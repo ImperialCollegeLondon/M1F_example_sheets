@@ -60,9 +60,9 @@ begin
   let n := q.num,
   let d := q.denom,
   -- now a lot of kerfuffle to get from q ^ 2 = 3 to n ^ 2 = 3 d ^ 2
-  have Hq2 := rat.num_denom q,
+  have Hq2 := @rat.num_denom q,
   rw rat.mk_eq_div at Hq2,
-  rw Hq2 at Hq,
+  rw ←Hq2 at Hq,
   change ((n : ℚ) / d) ^ 2 = 3 at Hq,
   rw [pow_two,div_mul_div] at Hq,
   have Hd : (d : ℚ) ≠ 0 := by simp [rat.denom_ne_zero],

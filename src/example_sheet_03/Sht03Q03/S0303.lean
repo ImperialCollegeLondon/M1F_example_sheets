@@ -1,4 +1,4 @@
-import analysis.real
+import data.real.basic
 import xenalib.real_nth_root
 import tactic.norm_num
 import tactic.explode
@@ -112,13 +112,6 @@ end
 -- end of Q3a
 
 -- Q3b
-
-/- Mario proof -/
-variables {α : Type*} [linear_ordered_semiring α]
-theorem pow_lt_pow {a : α} {n m : ℕ} (ha : 1 < a) (h : n < m) : a ^ n < a ^ m :=
-lt_of_lt_of_le
-  ((lt_mul_iff_one_lt_left (pow_pos (lt_trans zero_lt_one ha) _)).2 ha)
-  (pow_le_pow (le_of_lt ha) h)
 
 theorem Sht3Q3b : (10000 : ℝ) ^ 100 < (100 : ℝ) ^ 10000 := begin
   rw (show 10000 = 100 * 100, by norm_num),

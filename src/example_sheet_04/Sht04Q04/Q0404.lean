@@ -1,7 +1,7 @@
 -- NOTE THAT I (KB) HAVE NOT TYPED IN SOLUTIONS TO THIS
 -- QUESTION SO THERE MIGHT BE ERRORS
 
-import analysis.exponential
+import analysis.complex.exponential
 import data.real.irrational
 
 open real

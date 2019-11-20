@@ -1,5 +1,4 @@
-import analysis.real
-
+import data.real.basic
 lemma mul_pos_iff_div_pos {x y : ℝ} (Hy : y ≠ 0) : 0 < x * y ↔ 0 < x / y :=
 begin
   have H : 0 < y * y := mul_self_pos Hy,

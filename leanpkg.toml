@@ -1,8 +1,8 @@
 [package]
 name = "M1F_2018-19"
 version = "0.1"
-lean_version = "nightly-2018-06-21"
+lean_version = "3.4.2"
 path = "src"
 
 [dependencies]
-mathlib = {git = "https://github.com/leanprover/mathlib", rev = "2a86b06b1853493ab4fb381514e7d1a3f4dfc54b"}
+mathlib = {git = "https://github.com/leanprover/mathlib", rev = "d67e527adc99837b731799190fdc7cbeb596254f"}

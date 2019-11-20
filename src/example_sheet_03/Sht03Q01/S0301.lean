@@ -1,4 +1,4 @@
-import xenalib.fakereals tactic.interactive
+import xenalib.fakereals tactic.interactive tactic.rcases
 
 open real'
 

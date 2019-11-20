@@ -1,4 +1,4 @@
-import analysis.real
+import data.real.basic
 import xenalib.real_nth_root
 
 open real

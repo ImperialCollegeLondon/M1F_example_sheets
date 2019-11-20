@@ -1,4 +1,4 @@
-import analysis.real tactic.norm_num algebra.group_power
+import data.real.basic tactic.norm_num algebra.group_power
 
 def S (a : {n : ℕ // n ≥ 1} → ℝ) 
   (n : ℕ) (H : n ≥ 1) := { r: ℝ | ∃ (m : ℕ) (Hm : m ≥ n), r = a ⟨m,ge_trans Hm H⟩ }

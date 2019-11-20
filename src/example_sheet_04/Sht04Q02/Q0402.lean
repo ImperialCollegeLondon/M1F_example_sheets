@@ -1,7 +1,7 @@
 -- IMPORTANT NOTE: I (KB) HAVE NOT TYPED UP A SOLUTION TO THIS SO THERE MIGHT BE ERRORS
 
 import data.real.basic
-import analysis.exponential
+import analysis.complex.exponential
 
 theorem Q0201b (x : ℝ) : let y := x - 2 in 
 3 * x ^ 3 - 18 * x ^ 2 + 27 * x - 4 = 3 * y ^ 3 - 9 * y + 2 := sorry

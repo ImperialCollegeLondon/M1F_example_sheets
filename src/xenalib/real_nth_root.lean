@@ -1,7 +1,6 @@
 -- Thanks to Abhi for starting me off.
 
-import analysis.real
-import analysis.exponential
+import analysis.complex.exponential
 import tactic.norm_num
 
 namespace real

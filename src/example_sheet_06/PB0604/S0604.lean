@@ -24,9 +24,9 @@ begin
     change b < 0 at Hbneg,
     unfold upper_bounds at Hb,
     dsimp at Hb,
-    let H := Hb (b / 2) _,
+    have H : b / 2 < 0,
       linarith,
-    change b / 2 < 0,
+    set h := @Hb (b / 2) H with H2,
     linarith
   }
 end
@@ -62,7 +62,7 @@ begin
   apply le_of_not_gt,
   intro Hb,
   have Hs : (y + b) / 2 < b := by linarith,
-  have H := Hy ((y + b) / 2) Hs,
+  have H := @Hy ((y + b) / 2) Hs,
   linarith,
 end
 
